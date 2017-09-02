@@ -1,4 +1,4 @@
-package com.github.akvast.mvvm
+package com.github.akvast.mvvm.utils
 
 import android.databinding.BindingAdapter
 import android.net.Uri
@@ -60,8 +60,6 @@ fun bindRecyclerViewAdapter(recyclerView: RecyclerView, adapter: RecyclerView.Ad
     recyclerView.adapter = adapter
     recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
 }
-
-// Fresco:
 
 @BindingAdapter("android:src")
 fun bindDraweeImage(view: SimpleDraweeView, data: Any?) {

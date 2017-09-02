@@ -10,7 +10,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
     }
 
     dataBinding {
@@ -33,3 +33,34 @@ dependencies {
     api "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     kapt "com.android.databinding:compiler:$android_plugin_version"
 }
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'mvvm-adapter'
+
+    publishedGroupId = 'com.github.akvast'
+    libraryName = 'mvvm-adapter'
+    artifact = 'mvvm-adapter'
+
+    libraryDescription = 'MVVM base adapter for RecyclerView.'
+
+    siteUrl = 'https://github.com/akvast/mvvm'
+    gitUrl = 'https://github.com/akvast/mvvm.git'
+
+    libraryVersion = '0.1'
+
+    developerId = 'akvast'
+    developerName = 'Alexander Kvast'
+    developerEmail = 'alexanderkvast@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+tasks.withType(Javadoc).all {
+    excludes = ['**/*.kt']
+}
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
