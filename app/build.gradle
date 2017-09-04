@@ -30,8 +30,8 @@ android {
 }
 
 dependencies {
-    implementation project(":utils")
-    implementation project(":adapter")
+    implementation project(':mvvm-utils')
+    implementation project(':mvvm-adapter')
 
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation "com.android.support:design:$support_version"

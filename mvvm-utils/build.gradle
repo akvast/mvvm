@@ -10,7 +10,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
-        versionName "0.1"
+        versionName "0.1.3"
     }
 
     dataBinding {
@@ -27,8 +27,10 @@ android {
 }
 
 dependencies {
-    api "com.android.support:appcompat-v7:$support_version"
+    api 'com.android.support:appcompat-v7:26.0.1'
     api "com.android.support:recyclerview-v7:$support_version"
+
+    api 'com.facebook.fresco:fresco:1.5.0'
 
     api "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     kapt "com.android.databinding:compiler:$android_plugin_version"
@@ -36,18 +38,18 @@ dependencies {
 
 ext {
     bintrayRepo = 'maven'
-    bintrayName = 'mvvm-adapter'
+    bintrayName = 'mvvm-utils'
 
     publishedGroupId = 'com.github.akvast'
-    libraryName = 'mvvm-adapter'
-    artifact = 'mvvm-adapter'
+    libraryName = 'mvvm-utils'
+    artifact = 'mvvm-utils'
 
-    libraryDescription = 'MVVM base adapter for RecyclerView.'
+    libraryDescription = 'MVVM utils for Android DataBinding.'
 
     siteUrl = 'https://github.com/akvast/mvvm'
     gitUrl = 'https://github.com/akvast/mvvm.git'
 
-    libraryVersion = '0.1'
+    libraryVersion = '0.1.3'
 
     developerId = 'akvast'
     developerName = 'Alexander Kvast'
@@ -59,7 +61,7 @@ ext {
 }
 
 tasks.withType(Javadoc).all {
-    excludes = ['**/*.kt']
+    enabled = false
 }
 
 apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'

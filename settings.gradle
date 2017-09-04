@@ -1,1 +1,1 @@
-include ':app', ':adapter', ':utils'
+include ':app', ':mvvm-adapter', ':mvvm-utils'
