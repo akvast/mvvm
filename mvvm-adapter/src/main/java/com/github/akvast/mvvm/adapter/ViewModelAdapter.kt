@@ -9,13 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import java.util.*
+import kotlin.collections.LinkedHashMap
 
 abstract class ViewModelAdapter : RecyclerView.Adapter<ViewModelAdapter.ViewHolder>() {
 
     protected val items = LinkedList<Any>()
 
-    private val cellMap = Hashtable<Class<out Any>, CellInfo>()
-    private val sharedObjects = Hashtable<Int, Any>()
+    private val cellMap = LinkedHashMap<Class<out Any>, CellInfo>()
+    private val sharedObjects = LinkedHashMap<Int, Any>()
 
     private var beginUpdateItemsSize = 0
 
@@ -61,15 +62,15 @@ abstract class ViewModelAdapter : RecyclerView.Adapter<ViewModelAdapter.ViewHold
     protected fun getCellInfo(viewModel: Any): CellInfo {
         // Find info with simple class check:
         cellMap.entries
-                .filter { it.key == viewModel.javaClass }
-                .first { return it.value }
+                .find { it.key == viewModel.javaClass }
+                ?.apply { return value }
 
         // Find info with inheritance class check:
         cellMap.entries
-                .filter { it.key.isInstance(viewModel) }
-                .first {
-                    cellMap[viewModel.javaClass] = it.value
-                    return it.value
+                .find { it.key.isInstance(viewModel) }
+                ?.apply {
+                    cellMap[viewModel.javaClass] = value
+                    return value
                 }
 
         throw Exception("Cell info for class ${viewModel.javaClass.name} not found.")

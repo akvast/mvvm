@@ -9,8 +9,6 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 1
-        versionName "0.1.3"
     }
 
     dataBinding {
@@ -47,7 +45,7 @@ ext {
     siteUrl = 'https://github.com/akvast/mvvm'
     gitUrl = 'https://github.com/akvast/mvvm.git'
 
-    libraryVersion = '0.1.3'
+    libraryVersion = "0.1.4"
 
     developerId = 'akvast'
     developerName = 'Alexander Kvast'

@@ -22,6 +22,16 @@ object ViewModelUtils {
     var maxImagesHeight = 720
 }
 
+@BindingAdapter("layout_width")
+fun bindLayoutWidth(view: View, width: Float) {
+    view.layoutParams.width = width.toInt()
+}
+
+@BindingAdapter("layout_height")
+fun bindLayoutHeight(view: View, height: Float) {
+    view.layoutParams.height = height.toInt()
+}
+
 @BindingAdapter("goneIf")
 fun bindGoneIf(view: View, hide: Boolean) {
     view.visibility = when (hide) {
