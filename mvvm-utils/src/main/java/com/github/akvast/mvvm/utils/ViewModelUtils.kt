@@ -71,7 +71,7 @@ fun bindRecyclerViewAdapter(recyclerView: RecyclerView, adapter: RecyclerView.Ad
     recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
 }
 
-@BindingAdapter("android:src")
+@BindingAdapter("src")
 fun bindDraweeImage(view: SimpleDraweeView, data: Any?) {
     val uri = when (data) {
         is String -> Uri.parse(data)
