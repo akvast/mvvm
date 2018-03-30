@@ -34,13 +34,13 @@ abstract class ViewModelAdapter : RecyclerView.Adapter<ViewModelAdapter.ViewHold
         sharedObjects[bindingId] = sharedObject
     }
 
-    protected fun getViewModel(position: Int) = items[position]
+    protected open fun getViewModel(position: Int) = items[position]
 
-    protected fun beginUpdates() {
+    protected open fun beginUpdates() {
         beginUpdateItemsSize = itemCount
     }
 
-    protected fun endUpdates() {
+    protected open fun endUpdates() {
         val changed = Math.min(beginUpdateItemsSize, itemCount)
         val diff = Math.max(beginUpdateItemsSize, itemCount) - changed
 
@@ -59,11 +59,9 @@ abstract class ViewModelAdapter : RecyclerView.Adapter<ViewModelAdapter.ViewHold
         }
     }
 
-    protected fun getCellInfo(viewModel: Any): CellInfo {
+    protected open fun getCellInfo(viewModel: Any): CellInfo {
         // Find info with simple class check:
-        cellMap.entries
-                .find { it.key == viewModel.javaClass }
-                ?.apply { return value }
+        cellMap[viewModel.javaClass]?.apply { return this }
 
         // Find info with inheritance class check:
         cellMap.entries
@@ -76,9 +74,9 @@ abstract class ViewModelAdapter : RecyclerView.Adapter<ViewModelAdapter.ViewHold
         throw Exception("Cell info for class ${viewModel.javaClass.name} not found.")
     }
 
-    protected fun onBind(binding: ViewDataBinding,
-                         cellInfo: CellInfo,
-                         position: Int) {
+    protected open fun onBind(binding: ViewDataBinding,
+                              cellInfo: CellInfo,
+                              position: Int) {
 
         val viewModel = getViewModel(position)
         if (cellInfo.bindingId != 0)
@@ -93,8 +91,8 @@ abstract class ViewModelAdapter : RecyclerView.Adapter<ViewModelAdapter.ViewHold
         return getCellInfo(getViewModel(position)).layoutId
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        val inflater = LayoutInflater.from(parent?.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(viewType, parent, false)
         val viewHolder = ViewHolder(view)
 
@@ -103,11 +101,9 @@ abstract class ViewModelAdapter : RecyclerView.Adapter<ViewModelAdapter.ViewHold
         return viewHolder
     }
 
-    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        if (holder != null) {
-            val cellInfo = getCellInfo(getViewModel(position))
-            onBind(holder.binding, cellInfo, position)
-        }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val cellInfo = getCellInfo(getViewModel(position))
+        onBind(holder.binding, cellInfo, position)
     }
 
     // Support classes:
@@ -115,7 +111,7 @@ abstract class ViewModelAdapter : RecyclerView.Adapter<ViewModelAdapter.ViewHold
     data class CellInfo(val layoutId: Int, val bindingId: Int)
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val binding = DataBindingUtil.bind<ViewDataBinding>(view)
+        val binding: ViewDataBinding = DataBindingUtil.bind(view)!!
     }
 
 }

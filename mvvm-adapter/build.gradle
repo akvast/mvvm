@@ -3,12 +3,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    compileSdkVersion target_sdk
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion target_sdk
     }
 
     dataBinding {
@@ -45,7 +44,7 @@ ext {
     siteUrl = 'https://github.com/akvast/mvvm'
     gitUrl = 'https://github.com/akvast/mvvm.git'
 
-    libraryVersion = "0.1.4"
+    libraryVersion = "0.2.0"
 
     developerId = 'akvast'
     developerName = 'Alexander Kvast'

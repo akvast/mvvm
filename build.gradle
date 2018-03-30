@@ -3,9 +3,10 @@
 buildscript {
 
     ext {
-        android_plugin_version = '3.0.0-beta5'
-        kotlin_version = '1.1.4-3'
-        support_version = '26.0.2'
+        android_plugin_version = '3.1.0'
+        kotlin_version = '1.2.30'
+        target_sdk = 27
+        support_version = '27.1.0'
     }
 
     repositories {
