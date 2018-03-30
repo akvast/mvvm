@@ -74,8 +74,8 @@ fun bindRecyclerViewAdapter(recyclerView: RecyclerView, adapter: RecyclerView.Ad
 }
 
 @BindingAdapter("activity")
-fun bindToolbarActivity(toolbar: Toolbar, activity: AppCompatActivity) {
-    activity.setSupportActionBar(toolbar)
+fun bindToolbarActivity(toolbar: Toolbar, activity: AppCompatActivity?) {
+    activity?.setSupportActionBar(toolbar)
 }
 
 @BindingAdapter("src")
