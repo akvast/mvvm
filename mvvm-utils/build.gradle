@@ -45,7 +45,7 @@ ext {
     siteUrl = 'https://github.com/akvast/mvvm'
     gitUrl = 'https://github.com/akvast/mvvm.git'
 
-    libraryVersion = "0.3.0"
+    libraryVersion = "0.3.1"
 
     developerId = 'akvast'
     developerName = 'Alexander Kvast'
