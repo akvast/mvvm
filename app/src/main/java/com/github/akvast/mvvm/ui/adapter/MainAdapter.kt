@@ -1,6 +1,5 @@
 package com.github.akvast.mvvm.ui.adapter
 
-import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import android.widget.Toast
 import com.github.akvast.mvvm.BR
@@ -15,16 +14,13 @@ object MainAdapter : ViewModelAdapter() {
         cell(MailViewModel::class.java, R.layout.cell_mail, BR.vm)
 
         sharedObject(this, BR.adapter)
-    }
 
-    override fun reload(refreshLayout: SwipeRefreshLayout?) {
-        items.clear()
-        items.add("Today")
-        items.add(MailViewModel("Brunch this weekend?", "Ali Connors", "I'll be in your neighborhood doing errands this weekend. Do you want..."))
-        items.add(MailViewModel("Summer BBQ", "to Alex, Scott, Jennifer", "Wish I could come, but i'm out of town this weekend."))
-        items.add("Yesterday")
-        items.add(MailViewModel("Oui Oui", "Sandra Adams", "Do you have Paris recommendations? Have you even been?"))
-        notifyDataSetChanged()
+        items = arrayOf(
+                "Today",
+                MailViewModel("Brunch this weekend?", "Ali Connors", "I'll be in your neighborhood doing errands this weekend. Do you want..."),
+                MailViewModel("Summer BBQ", "to Alex, Scott, Jennifer", "Wish I could come, but i'm out of town this weekend."),
+                "Yesterday",
+                MailViewModel("Oui Oui", "Sandra Adams", "Do you have Paris recommendations? Have you even been?"))
     }
 
     fun mailSelected(view: View, model: MailViewModel) {

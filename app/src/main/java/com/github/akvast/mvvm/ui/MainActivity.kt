@@ -1,10 +1,10 @@
 package com.github.akvast.mvvm.ui
 
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.app.AppCompatDelegate
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.databinding.DataBindingUtil
 import com.github.akvast.mvvm.R
 import com.github.akvast.mvvm.databinding.ActivityMainBinding
 import com.github.akvast.mvvm.ui.adapter.MainAdapter
@@ -39,12 +39,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.mainAdapter = MainAdapter
         binding.navigationAdapter = NavigationAdapter
-    }
-
-    override fun onResume() {
-        super.onResume()
-        MainAdapter.reload()
-        NavigationAdapter.reload()
     }
 
 }

@@ -4,13 +4,12 @@ apply plugin: 'kotlin-kapt'
 
 android {
 
-    compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    compileSdkVersion target_sdk
 
     defaultConfig {
         applicationId "com.github.akvast.mvvm"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion target_sdk
         versionCode 1
         versionName "0.1"
 
@@ -33,11 +32,10 @@ dependencies {
     implementation project(':mvvm-utils')
     implementation project(':mvvm-adapter')
 
-    implementation "com.android.support:appcompat-v7:$support_version"
-    implementation "com.android.support:design:$support_version"
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.google.android.material:material:1.0.0'
 
-    implementation 'com.facebook.fresco:fresco:1.5.0'
+    implementation 'com.facebook.fresco:fresco:1.12.1'
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    kapt "com.android.databinding:compiler:$android_plugin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

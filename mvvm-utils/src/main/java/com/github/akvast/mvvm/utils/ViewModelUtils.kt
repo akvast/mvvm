@@ -1,23 +1,24 @@
 package com.github.akvast.mvvm.utils
 
-import android.databinding.BindingAdapter
 import android.net.Uri
-import android.support.annotation.ColorInt
-import android.support.annotation.DrawableRes
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v4.graphics.drawable.DrawableCompat
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import android.view.View
 import android.widget.ImageView
+import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.view.SimpleDraweeView
 import com.facebook.imagepipeline.common.ResizeOptions
 import com.facebook.imagepipeline.common.RotationOptions
 import com.facebook.imagepipeline.request.ImageRequestBuilder
 import java.io.File
+import kotlin.math.min
 
 object ViewModelUtils {
     var maxImagesWidth = 480
@@ -89,8 +90,8 @@ fun bindDraweeImage(view: SimpleDraweeView, data: Any?) {
         }
     }
 
-    var width = Math.min(ViewModelUtils.maxImagesWidth, view.measuredWidth)
-    var height = Math.min(ViewModelUtils.maxImagesHeight, view.measuredHeight)
+    var width = min(ViewModelUtils.maxImagesWidth, view.measuredWidth)
+    var height = min(ViewModelUtils.maxImagesHeight, view.measuredHeight)
 
     if (width == 0) width = ViewModelUtils.maxImagesWidth
     if (height == 0) height = ViewModelUtils.maxImagesHeight

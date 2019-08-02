@@ -1,8 +1,8 @@
 package com.github.akvast.mvvm.utils
 
-import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 

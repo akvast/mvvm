@@ -24,13 +24,12 @@ android {
 }
 
 dependencies {
-    api "com.android.support:appcompat-v7:$support_version"
-    api "com.android.support:recyclerview-v7:$support_version"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    api 'com.facebook.fresco:fresco:1.8.1'
+    api 'androidx.appcompat:appcompat:1.0.2'
+    api 'androidx.recyclerview:recyclerview:1.0.0'
 
-    api "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    kapt "com.android.databinding:compiler:$android_plugin_version"
+    api 'com.facebook.fresco:fresco:1.12.1'
 }
 
 ext {
@@ -46,7 +45,7 @@ ext {
     siteUrl = 'https://github.com/akvast/mvvm'
     gitUrl = 'https://github.com/akvast/mvvm.git'
 
-    libraryVersion = "0.2.3"
+    libraryVersion = "0.3.0"
 
     developerId = 'akvast'
     developerName = 'Alexander Kvast'

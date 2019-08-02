@@ -1,28 +1,39 @@
 package com.github.akvast.mvvm.adapter
 
-import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
-import android.support.annotation.LayoutRes
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import java.util.*
-import kotlin.collections.LinkedHashMap
+import androidx.annotation.LayoutRes
+import androidx.annotation.UiThread
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.RecyclerView
+import java.lang.ref.WeakReference
+import kotlin.math.max
+import kotlin.math.min
 
-abstract class ViewModelAdapter : RecyclerView.Adapter<ViewModelAdapter.ViewHolder>() {
+abstract class ViewModelAdapter(
+        lifecycleOwner: LifecycleOwner? = null)
+    : RecyclerView.Adapter<ViewModelAdapter.ViewHolder>() {
 
-    protected val items = LinkedList<Any>()
+    private val lifecycleOwnerRef = WeakReference(lifecycleOwner)
 
-    private val cellMap = LinkedHashMap<Class<out Any>, CellInfo>()
-    private val sharedObjects = LinkedHashMap<Int, Any>()
+    private val cellMap = hashMapOf<Class<out Any>, CellInfo>()
+    private val sharedObjects = hashMapOf<Int, Any>()
 
     private var beginUpdateItemsSize = 0
 
-    // Public functions:
+    var dynamicChanges = false
 
-    abstract fun reload(refreshLayout: SwipeRefreshLayout? = null)
+    var items = arrayOf<Any>()
+        @UiThread
+        set(value) {
+            if (dynamicChanges) beginUpdates()
+            field = value
+            if (dynamicChanges) endUpdates()
+            else notifyDataSetChanged()
+        }
 
     // Protected functions:
 
@@ -41,8 +52,8 @@ abstract class ViewModelAdapter : RecyclerView.Adapter<ViewModelAdapter.ViewHold
     }
 
     protected open fun endUpdates() {
-        val changed = Math.min(beginUpdateItemsSize, itemCount)
-        val diff = Math.max(beginUpdateItemsSize, itemCount) - changed
+        val changed = min(beginUpdateItemsSize, itemCount)
+        val diff = max(beginUpdateItemsSize, itemCount) - changed
 
         if (diff == 0 && changed > 1) {
             notifyDataSetChanged()
@@ -81,6 +92,8 @@ abstract class ViewModelAdapter : RecyclerView.Adapter<ViewModelAdapter.ViewHold
         val viewModel = getViewModel(position)
         if (cellInfo.bindingId != 0)
             binding.setVariable(cellInfo.bindingId, viewModel)
+
+        binding.lifecycleOwner = lifecycleOwnerRef.get()
     }
 
     // RecyclerView.Adapter
