@@ -73,6 +73,7 @@ abstract class ViewModelAdapter(
             binding.setVariable(cellInfo.bindingId, viewModel)
 
         binding.lifecycleOwner = lifecycleOwnerRef.get()
+        binding.executePendingBindings()
     }
 
     // RecyclerView.Adapter
