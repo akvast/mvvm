@@ -8,10 +8,9 @@ import androidx.annotation.UiThread
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import java.lang.ref.WeakReference
-import kotlin.math.max
-import kotlin.math.min
 
 abstract class ViewModelAdapter(
         lifecycleOwner: LifecycleOwner? = null)
@@ -22,17 +21,20 @@ abstract class ViewModelAdapter(
     private val cellMap = hashMapOf<Class<out Any>, CellInfo>()
     private val sharedObjects = hashMapOf<Int, Any>()
 
-    private var beginUpdateItemsSize = 0
-
-    var dynamicChanges = false
+    protected var detectDiffMoves = false
 
     var items = arrayOf<Any>()
         @UiThread
         set(value) {
-            if (dynamicChanges) beginUpdates()
-            field = value
-            if (dynamicChanges) endUpdates()
-            else notifyDataSetChanged()
+            try {
+                val callback = DiffCallback(field, value)
+                val diffResult = DiffUtil.calculateDiff(callback, detectDiffMoves)
+                field = value
+                diffResult.dispatchUpdatesTo(this)
+            } catch (ex: NotImplementedError) {
+                field = value
+                notifyDataSetChanged()
+            }
         }
 
     // Protected functions:
@@ -46,29 +48,6 @@ abstract class ViewModelAdapter(
     }
 
     protected open fun getViewModel(position: Int) = items[position]
-
-    protected open fun beginUpdates() {
-        beginUpdateItemsSize = itemCount
-    }
-
-    protected open fun endUpdates() {
-        val changed = min(beginUpdateItemsSize, itemCount)
-        val diff = max(beginUpdateItemsSize, itemCount) - changed
-
-        if (diff == 0 && changed > 1) {
-            notifyDataSetChanged()
-            return
-        }
-
-        if (changed != 0) notifyItemRangeChanged(0, changed)
-
-        if (diff > 0) {
-            when (beginUpdateItemsSize > itemCount) {
-                true -> notifyItemRangeRemoved(changed, diff)
-                false -> notifyItemRangeInserted(changed, diff)
-            }
-        }
-    }
 
     protected open fun getCellInfo(viewModel: Any): CellInfo {
         // Find info with simple class check:
@@ -125,6 +104,49 @@ abstract class ViewModelAdapter(
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding: ViewDataBinding = DataBindingUtil.bind(view)!!
+    }
+
+    // DiffUtil:
+
+    protected open fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
+        throw NotImplementedError()
+    }
+
+    protected open fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
+        return areItemsTheSame(oldItem, newItem)
+    }
+
+    protected open fun getChangePayload(oldItem: Any, newItem: Any): Any? {
+        return null
+    }
+
+    private inner class DiffCallback(
+            val oldItems: Array<Any>,
+            val newItems: Array<Any>)
+        : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldItems.size
+
+        override fun getNewListSize(): Int = newItems.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldItem = oldItems[oldItemPosition]
+            val newItem = newItems[newItemPosition]
+            return this@ViewModelAdapter.areItemsTheSame(oldItem, newItem)
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldItem = oldItems[oldItemPosition]
+            val newItem = newItems[newItemPosition]
+            return this@ViewModelAdapter.areContentsTheSame(oldItem, newItem)
+        }
+
+        override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
+            val oldItem = oldItems[oldItemPosition]
+            val newItem = newItems[newItemPosition]
+            return this@ViewModelAdapter.getChangePayload(oldItem, newItem)
+        }
+
     }
 
 }
